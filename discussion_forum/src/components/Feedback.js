@@ -77,10 +77,10 @@ const App = () => {
             <Form.Select className="feedback_inp mb-4" name='Category' value={value} onChange={handleInput}
               style={{width: '80%'}}
               >
-              <option value="app-feedback">Feedback about app</option>
-              <option value="course-feedback">Feedback about course</option>
-              <option value="faculty-feedback">Feedback about faculty</option>
-              <option value="suggestion-feedback">Feedback about suggestion</option>
+              <option value="App">Feedback about app</option>
+              <option value="Course">Feedback about course</option>
+              <option value="Faculty">Feedback about faculty</option>
+              <option value="Suggestion">Feedback about suggestion</option>
             </Form.Select>
             <Form.Text muted className="feedback_inpp">Leave your feedback here.</Form.Text>
             <FloatingLabel className="feedback_inp mb-4" label="Feedback">

@@ -24,193 +24,104 @@ const app = express();
 app.use(cookieParser());
 const router = express.Router();
 
-
 //##################### Admin ###############################
 
 // total user find API
 
 router.get("/queryCount", async (req, res) => {
-  QueryData.find((err,docs)=>{
-    if(docs){
-      res.send({status:200,data:docs})
+  QueryData.find((err, docs) => {
+    if (docs) {
+      res.send({ status: 200, data: docs });
+    } else {
+      res.send({ status: 500, error: err });
     }
-    else{
-      res.send({status:500, error:err})
-    }
-  })
- 
+  });
 });
 
 router.get("/usersCount", async (req, res) => {
-  User.find((err,docs)=>{
-    if(docs){
-      res.send({status:200,data:docs})
+  User.find((err, docs) => {
+    if (docs) {
+      res.send({ status: 200, data: docs });
+      console.log("bbbbbb", data)
+    } else {
+      res.send({ status: 500, error: err });
     }
-    else{
-      res.send({status:500, error:err})
-    }
-  })
- 
+  });
 });
+ 
+///////////////////////// show user query to admin API //////////////////////
 
+router.get("/showquery", async (req, res) => {
+  QueryData.find((err, docs) => {
+    if (docs) {
+      res.send({ status: 200, data: docs });
+    } else {
+      res.send({ status: 500, error: err });
+    }
+  });
+});
 
 ///////////////////////////////////////////////////////////  usersList API //////////////////////////////////////////////////
 
 router.get("/usersList", async (req, res) => {
   try {
-    // console.log("-------------------");
-    const users = await User.find({}, {name: 1, Email: 1, id:1});
+    const users = await User.find({}, { name: 1, Email: 1, id: 1 });
     res.send(users);
-
-    // console.log(users)
-    // console.log('trying')
-
-
   } catch (error) {
     console.error("Error fetching users list:", error);
-    res.status(500).send({status: 500, error: error});
+    res.status(500).send({ status: 500, error: error });
   }
 });
 
-
-///////////////////////////////////////////////////////////  Query Category API //////////////////////////////////////////////////
-
+///////////////////////////////////////////////////////////  Report Category API //////////////////////////////////////////////////
 
 router.get("/queryCategory", async (req, res) => {
-  ReportData.find((err,docs)=>{
-    if(docs){
-      res.send({status:200,data:docs})
-      console.log('docs ========', docs)
-
-
+  ReportData.find((err, docs) => {
+    if (docs) {
+      res.send({ status: 200, data: docs });
+    } else {
+      console.log("err ========", err);
+      res.send({ status: 500, error: err });
     }
-    else{
-      console.log('err ========', err)
-      res.send({status:500, error:err})
-    }
-  })
- 
+  });
 });
 
+///////////////////////////////////////////////////////////  Get Feedback Data API //////////////////////////////////////////////////
 
-// router.get("/queryCategory", async (req, res) => {
-//   try {
-//     console.log("-------------------");
+router.get("/findfeedback", async (req, res) => {
+  FeedbackData.find((err, docs) => {
+    if (docs) {
+      res.send({ status: 200, data: docs });
+      // console.log("Mydata--------------", docs)
+    } else {
+      console.log("err ========", err);
+      res.send({ status: 500, error: err });
+    }
+  });
+});
 
+/////////////////////////////////////////////////////////  Get queries //////////////////////////////////////////////////
 
-    // const queryCategoryreturn=  await ReportData.count(  { Category:"C++"}  )
+router.get("/findreport", async (req, res) => {
+  ReportData.find((err, docs) => {
+    if (docs) {
+      res.send({ status: 200, data: docs });
+      // console.log('docs ========', docs)
+    } else {
+      console.log("err ========", err);
+      res.send({ status: 500, error: err });
+    }
+  });
+});
 
-    // const queryCategoryReturn = await ReportData.find();
-    // console.dir(queryCategoryReturn);
-    // res.send(queryCategoryReturn);
-    
-    // const queryCategoryReturn = await ReportData.find();
-        
-    // console.log(queryCategoryReturn)
-    // res.send(queryCategoryReturn);
-    // 
-    // const queryCategoryReturn = await ReportData.find({}, {Category: 1});
-
-    // const queryCategoryreturn = await ReportData.distinct("Category");
-
-
-    
-
-
-
-   
-
-    // console.log(count)
-
-    // res.send({ count });
-
-
-//   } catch (error) {
-//     console.error("Error fetching users list:", error);
-//     res.status(500).send({status: 500, error: error});
-//   }
-// });
-
-
-
-/////////////////////////////////////////////////////// Delete Report Object API /////////////////////////////
-
-// app.delete('/delete-object/:objectId', (req, res) => {
-//   const objectId = req.params.objectId;
-
-
-//   // Remove the object with the given objectId from MongoDB
-//  const countt=  ReportData.collection('reports').deleteOne({ _id: ObjectId(objectId) }, (err, result) => {
-
-//     if (err) {
-//       console.log(err);
-//       res.send({ success: false, message: 'Error deleting object from MongoDB' });
-//     } else {
-//       res.send({ success: true, message: 'Object deleted successfully' });
-//     }
-//   });
-
-//   console.log(countt);
-// });
-
-
-
-
-// router.get("/usersList", async (req, res) => {
-
-//   User.find((err,docs)=>{
-//     console.log("find users list")
-//     if(docs){ 
-//       res.send({status:200,data:docs})
-//     }
-//     else{
-//       res.send({status:500, error:err})
-//     }
-//   })
- 
-// });
-
-// total queries API
-
-// router.get("/queriesCount", async (req, res) => {
-//   const userExist = await QueryData.find();
-//   let queryCount=0;
-//   let total_queries = "Total queries";
-
-//   if (userExist.queryData ) {
-//     queryCount++;
-//     res.send({ Total queries:  queryCount });
-//   } else {
-//     res.send({ "No query "  });
-//   }
-// });
-
-
-
-// router.get("/queriesCount", async (req, res) => {
-//   const userExist = await QueryData.find();
-//   const queryCount = userExist.QueryDetails;
-//   const message = queryCount > 0 ? `TotalQueries: ${queryCount}` : "No queries found";
-
-//   res.send({ message });
-// });
 
 
 router.get("/queriesCount", async (req, res) => {
   const queryCount = QueryData.countDocuments;
-    // const message = queryCount > 0 ? `TotalQueries: ${queryCount}` : "No  found";
-
   res.send({ queryCount });
 });
 
-
-
-
-
-
 //######################  Client #########################
-
-
 
 // =============== Image Uplaod ===================
 router.post("/Upload", async (req, res) => {
@@ -231,7 +142,7 @@ router.post("/Upload", async (req, res) => {
 
   try {
     const { postImage, Title } = req.body;
-    console.log(" myFILELLLLLLLLLLL ====  ");
+    // console.log(" myFILELLLLLLLLLLL ====  ");
 
     const commentData = new UserImage({ postImage, Title });
     await commentData.save();
@@ -245,7 +156,7 @@ let userExist = "";
 router.get("/OwnQuestion", Authenticate, async (req, res) => {
   //  localStorage.getItem('user',JSON.stringify(Email));
 
-  console.log(userExist.name);
+  // console.log(userExist.name);
   const userData = await QueryData.find({ UserID: userExist.Email }).sort({
     _id: -1,
   });
@@ -261,7 +172,7 @@ router.get("/OwnQuestionn", Authenticate, async (req, res) => {
   // console.log("helo Own Question2 page");
   //  localStorage.getItem('user',JSON.stringify(Email));
 
-  console.log(userExist.name);
+  // console.log(userExist.name);
   const userData = await User.findOne({ Email: userExist.Email });
   // const userData = await QueryData.find().sort({ _id: -1 });
 
@@ -271,9 +182,11 @@ router.get("/OwnQuestionn", Authenticate, async (req, res) => {
   res.send(userData);
 });
 
-router.get("/OwnProfileDetails", Authenticate, async(req,res) =>{
-  const userData = await User.findOne({Email: "191119@students.au.edu.pk"});
-  if(userData){ res.send(userData);}
+router.get("/OwnProfileDetails", Authenticate, async (req, res) => {
+  const userData = await User.findOne({ Email: "191119@students.au.edu.pk" });
+  if (userData) {
+    res.send(userData);
+  }
 });
 
 router.get("/Question", Authenticate, async (req, res) => {
@@ -298,10 +211,6 @@ router.get("/FetchReport", Authenticate, async (req, res) => {
   res.send(userExist);
 });
 
-
-
-
-
 router.get("/getData", Authenticate, (req, res) => {
   res.send(req.rootUser);
 });
@@ -315,13 +224,12 @@ router.post("/contact", Authenticate, async (req, res) => {
     if (!name || !Email || !Subject || !Message) {
       // console.log("filled contact form");
       return res.json("please filled the data");
-    }else{
-      contactData = new Contact({ name,Email,Subject,Message });
+    } else {
+      contactData = new Contact({ name, Email, Subject, Message });
       contactData.save();
       res.status(201).json({ message: "Your Contact Successfully Posted" });
       // console.log("Your Contact Successfully Posted");
     }
-   
   } catch (error) {
     console.log(error);
   }
@@ -338,16 +246,15 @@ router.post("/comment", async (req, res) => {
       // console.log("Missing Answer Data");
       res.status(400).json({ error: "Please Filled the Field Properly" });
     } else {
+      let quer = await QueryData.findOne({ PostID: PostID });
+      if (quer) {
+        const userMessage = await quer.addMessage(ID, PostID, comment);
+        console.log("*************************");
 
-      let quer= await QueryData.findOne({ PostID: PostID });
-    if (quer) {
-      const userMessage = await quer.addMessage(ID, PostID, comment);
-      console.log("*************************"); 
+        await quer.save();
 
-      await quer.save();
-
-      res.status(201).json({ message: "Comment Successfully" });
-    }
+        res.status(201).json({ message: "Comment Successfully" });
+      }
       // commentData = new CommentData({ ID, PostID, Answer });
       // commentData.save();
       // res.status(201).json({ message: "Your Comment Successfully Posted" });
@@ -360,39 +267,38 @@ router.post("/comment", async (req, res) => {
 
 //------------------- Forgot Pass Change ------------------
 
-router.post("/forgot_pass_save", async (req,res) => {
-  const { Email, New_Password, Confirm_Password} = req.body;
+router.post("/forgot_pass_save", async (req, res) => {
+  const { Email, New_Password, Confirm_Password } = req.body;
 
-try{
-  const userData = await User.findOne({ Email: Email});
-  if(userData){
-    // console.log(userData.Email);
-    const filter = { Email: Email};
-    this.New_Password = await bcrypt.hash(New_Password,12);
-    this.Confirm_Password= await bcrypt.hash(Confirm_Password,12);
-    const update = { Password: this.New_Password, Confirm_Password: this.Confirm_Password};
-    let userr =  await User.findOneAndUpdate(filter,update);
-  
-    res.status(201).json({message: "Your Data Successfully Posted"});
-    console.log("Your Data Successfully Posted");
+  try {
+    const userData = await User.findOne({ Email: Email });
+    if (userData) {
+      // console.log(userData.Email);
+      const filter = { Email: Email };
+      this.New_Password = await bcrypt.hash(New_Password, 12);
+      this.Confirm_Password = await bcrypt.hash(Confirm_Password, 12);
+      const update = {
+        Password: this.New_Password,
+        Confirm_Password: this.Confirm_Password,
+      };
+      let userr = await User.findOneAndUpdate(filter, update);
 
+      res.status(201).json({ message: "Your Data Successfully Posted" });
+      console.log("Your Data Successfully Posted");
+    }
+  } catch (err) {
+    console.log(err);
   }
-}catch(err){
-  console.log(err);
-
-}
 });
-
 
 // --------------- Change Password -----------------
 
-router.post("/change_pass", async(req,res) => {
+router.post("/change_pass", async (req, res) => {
   // console.log("chagneeeeeeeeeeee");
-  const {Email, Password, New_Password, Confirm_Password} = req.body;
-  try{
-    
-    const userData = await User.findOne({ Email: Email});
-    if(userData){
+  const { Email, Password, New_Password, Confirm_Password } = req.body;
+  try {
+    const userData = await User.findOne({ Email: Email });
+    if (userData) {
       console.log(userData.Email);
       const isMatch = await bcrypt.compare(Password, userData.Password);
       // console.log("pass: " + Password + "user pass: "+ userData.Password);
@@ -400,61 +306,62 @@ router.post("/change_pass", async(req,res) => {
         console.log("pass incorrect");
 
         return res.status(400).json({ message: "Invalid Credentials" });
-      }
-      else{
+      } else {
         // console.log(Email);
-        const filter = { Email: Email};
-        this.New_Password = await bcrypt.hash(New_Password,12);
-        this.Confirm_Password= await bcrypt.hash(Confirm_Password,12);
-        const update = { Password: this.New_Password, Confirm_Password: this.Confirm_Password};
+        const filter = { Email: Email };
+        this.New_Password = await bcrypt.hash(New_Password, 12);
+        this.Confirm_Password = await bcrypt.hash(Confirm_Password, 12);
+        const update = {
+          Password: this.New_Password,
+          Confirm_Password: this.Confirm_Password,
+        };
         // console.log("change pass mein hash se pehle =======");
         // await update.save();
-        let userr =  await User.findOneAndUpdate(filter,update);
+        let userr = await User.findOneAndUpdate(filter, update);
         // console.log("-0-0 --- " + userr);
         // await userr.save();
-        res.status(201).json({message: "Your Data Successfully Posted"});
+        res.status(201).json({ message: "Your Data Successfully Posted" });
         console.log("Your Data Successfully Posted");
-
       }
-      
-
     }
-
-
-  }catch(err){
+  } catch (err) {
     console.log(err);
   }
-
 });
 
 //------------------ Update Profile------------------
 let updateData;
-router.post("/UpdateProfile",async(req,res) => {
-  const {Email, name,  Password, Phone, Gender, Website, Github, Twitter } = req.body;
+router.post("/UpdateProfile", async (req, res) => {
+  const { Email, name, Password, Phone, Gender, Website, Github, Twitter } =
+    req.body;
 
-  try{
+  try {
     console.log(Email);
-  const userData = await User.findOne({ Email: Email});
-  // const userData = await QueryData.find().sort({ _id: -1 });
+    const userData = await User.findOne({ Email: Email });
+    // const userData = await QueryData.find().sort({ _id: -1 });
 
-  if (userData) {
-    console.log("haaaaaaaaaaaaaaaaaaaaaaa" + Gender + "33");
+    if (userData) {
+      console.log("haaaaaaaaaaaaaaaaaaaaaaa" + Gender + "33");
 
-    const filter = { Email: Email};
-    const update = { Phone: Phone ,Gender: Gender, Website: Website, Github: Github, Twitter: Twitter};
+      const filter = { Email: Email };
+      const update = {
+        Phone: Phone,
+        Gender: Gender,
+        Website: Website,
+        Github: Github,
+        Twitter: Twitter,
+      };
 
-    await User.findOneAndUpdate(filter, update);
-    res.status(201).json({message: "Your Data Successfully Posted"});
-    console.log("Your Data Successfully Posted");
-  }
+      await User.findOneAndUpdate(filter, update);
+      res.status(201).json({ message: "Your Data Successfully Posted" });
+      console.log("Your Data Successfully Posted");
+    }
     // updateData = new User({Phone});
     // updateData.save();
-   
-  }catch(err){
-      console.log(err);
+  } catch (err) {
+    console.log(err);
   }
 });
-
 
 //-----------Report API-------------------------
 
@@ -561,48 +468,45 @@ router.post("/Question", async (req, res) => {
 //------------------Query upvote ---------------------
 
 router.post("/QueryUpvote", async (req, res) => {
-  const {PostID,Upvote,Devote } = req.body;
- 
+  const { PostID, Upvote, Devote } = req.body;
 
   try {
     let like = Upvote;
     like = like + 1;
     let dislike = Devote;
     dislike = dislike + 1;
-    console.log("000000000" + PostID + "Like:::" + like + "Dislike:::" + dislike);
-      // const userExist = await QueryData.findOne({ UserID: "tech54qi@gmail.com" });
-      // console.log(userExist);
-      const filter = { PostID: PostID };
-      const update = { Upvote: like, Devote: dislike };
-  
-      await QueryData.findOneAndUpdate(filter, update);
-      // queryData = new QueryData({
-       
-      //   PostID,
-      //   Upvote
-      // });
-      // await queryData.save();
+    console.log(
+      "000000000" + PostID + "Like:::" + like + "Dislike:::" + dislike
+    );
+    // const userExist = await QueryData.findOne({ UserID: "tech54qi@gmail.com" });
+    // console.log(userExist);
+    const filter = { PostID: PostID };
+    const update = { Upvote: like, Devote: dislike };
 
-      res.status(201).json({ message: "Your Query Successfully Posted" });
-      console.log("Your Query Successfully Posted");
-    
+    await QueryData.findOneAndUpdate(filter, update);
+    // queryData = new QueryData({
+
+    //   PostID,
+    //   Upvote
+    // });
+    // await queryData.save();
+
+    res.status(201).json({ message: "Your Query Successfully Posted" });
+    console.log("Your Query Successfully Posted");
   } catch (err) {
     console.log(err);
   }
 });
 
-
-
-
 // ---------------- Forgot Pass -------------------
 
-router.post("/Forgot_Pass", async (req,res) =>{
-const {Email} = req.body;
-try{
-  if(!Email) {
-    return res
-    .status(400)
-    .json({ error: "please filled the field properly" });
+router.post("/Forgot_Pass", async (req, res) => {
+  const { Email } = req.body;
+  try {
+    if (!Email) {
+      return res
+        .status(400)
+        .json({ error: "please filled the field properly" });
     }
 
     if (Email.endsWith("@students.au.edu.pk")) {
@@ -615,9 +519,8 @@ try{
         // console.log(  `===================    ${user._id} ++ ${user.Email} ==========` );
 
         // token = await user.generateAuthToken();
-        let token = jwt.sign({ _id: this._id}, process.env.SECRET_KEY);
-        console.log("----" +  token);
-
+        let token = jwt.sign({ _id: this._id }, process.env.SECRET_KEY);
+        console.log("----" + token);
 
         // const token = await new Token({userId: user._id,token: crypto.randomBytes(32).toString("hex") }).save();
 
@@ -625,24 +528,23 @@ try{
         await sendEmail(Email, "Password Reset Mail", url);
 
         // console.log("user reg successfully");
-        return res.status(201).json({ message: "An email send to your account please verify." });
+        return res
+          .status(201)
+          .json({ message: "An email send to your account please verify." });
       }
     } else {
       return res.status(400).json({ error: "Invalid Data" });
     }
-
-}catch(err){
-  console.log(err);
-}
+  } catch (err) {
+    console.log(err);
+  }
 });
-
 
 // ------------- SIGN UP -------------
 let user;
 let token;
 
 router.post("/signup", async (req, res) => {
-  
   const { name, Email, Password, Confirm_Password } = req.body;
 
   try {
@@ -678,13 +580,14 @@ router.post("/signup", async (req, res) => {
         await sendEmail(user.Email, "Verification Mail", url);
 
         // console.log("user reg successfully");
-        return res.status(201).json({ message: "An email send to your account please verify." });
+        return res
+          .status(201)
+          .json({ message: "An email send to your account please verify." });
       }
     } else {
       return res.status(400).json({ error: "Invalid Data" });
     }
   } catch (err) {
-
     console.log(err);
     return res.status(400).json({ error: "Invalid Data" });
   }
@@ -749,10 +652,12 @@ router.post("/login", async (req, res) => {
   try {
     if (!Email || !Password) {
       console.log("missing login credentials");
-  
-      return res.status(400).json({ error: "please filled the field properly" });
+
+      return res
+        .status(400)
+        .json({ error: "please filled the field properly" });
     }
-  
+
     userExist = await User.findOne({ Email: Email });
     if (userExist) {
       console.log("Email already Exist");
@@ -786,12 +691,12 @@ router.post("/login", async (req, res) => {
           expires: new Date(Date.now() + 25892000000),
           httpOnly: false,
         });
-    
+
         res.cookie("Email", userExist.Email, {
           expires: new Date(Date.now() + 25892000000),
           httpOnly: false,
         });
-  
+
         // console.log("" + userExist);
         console.log("successfully login");
 
@@ -800,8 +705,6 @@ router.post("/login", async (req, res) => {
           userExist
         );
       }
-
-      
     } else {
       console.log("email is incorrect");
 
@@ -821,8 +724,8 @@ router.get("/logout", (req, res) => {
 let resp;
 
 router.get("/login/success", async (req, res) => {
-	console.log("----------------------------");
-	if (req.user) {
+  console.log("----------------------------");
+  if (req.user) {
     console.log(req.user);
     // console.log("----------------------------");
 
@@ -833,16 +736,15 @@ router.get("/login/success", async (req, res) => {
     // resp = req.user;
     // console.log("33");
 
-    // user = new User({ name: req.user.name.givenName, 
-    //   Email: req.user.emails[0].value, 
-    //   Password, 
+    // user = new User({ name: req.user.name.givenName,
+    //   Email: req.user.emails[0].value,
+    //   Password,
     //   Confirm_Password,
     //   Photo: req.user.picture,
     //   Verified: "True",
     //  });
     // console.log("hash mein jane se pehle ++++++++");
     // await user.save();
-
 
     res.cookie("Name", req.user.name.givenName, {
       expires: new Date(Date.now() + 25892000000),
@@ -854,33 +756,32 @@ router.get("/login/success", async (req, res) => {
       httpOnly: false,
     });
 
-		return res.status(200).json({
-			error: false,
-			message: "Successfully Loged In",
-			user: req.user,	
-		});
-	} else {
-		return res.status(403).json({ error: true, message: "Not Authorized" });
-	}
+    return res.status(200).json({
+      error: false,
+      message: "Successfully Loged In",
+      user: req.user,
+    });
+  } else {
+    return res.status(403).json({ error: true, message: "Not Authorized" });
+  }
 });
 
 router.get("/login/failed", (req, res) => {
   console.log("+++++++++++++++++++");
-	res.status(401).json({
-		error: true,
-		message: "Log in failure",
-	});
+  res.status(401).json({
+    error: true,
+    message: "Log in failure",
+  });
 });
 
 router.get("/google", passport.authenticate("google", ["profile", "email"]));
 
 router.get(
-	"/google/callback",
-	passport.authenticate("google", {
-		successRedirect: "/login/success",
-		failureRedirect: "http://localhost:3001/signup/",
-	}),
-
-);  
+  "/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/login/success",
+    failureRedirect: "http://localhost:3001/signup/",
+  })
+);
 
 module.exports = router;

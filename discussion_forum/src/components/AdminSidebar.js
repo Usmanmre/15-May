@@ -22,10 +22,7 @@ import { NavLink } from "react-router-dom";
 const AdminSidebar = () => {
   const navigate = useNavigate();
 
-  const UserLists = () => {
-    const handleClick = () => navigate("/userslist");
-  };
-
+ 
   return (
     <>
       {/* <div className="admin-container"> */}
@@ -59,10 +56,14 @@ const AdminSidebar = () => {
 
               <NavLink exact to="/adminreport"  activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="sidebar" icon="flag">
-                  All Reports
+                  Reports
                 </CDBSidebarMenuItem>
               </NavLink>
-
+              <NavLink exact to="/adminfeedback"  activeClassName="activeClicked">
+                <CDBSidebarMenuItem className="sidebar" icon="flag">
+                  Feedback
+                </CDBSidebarMenuItem>
+              </NavLink>
               <NavLink
                 exact
                 to="/hero404"

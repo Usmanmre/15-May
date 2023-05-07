@@ -39,8 +39,11 @@ const AdminUserslist = () => {
   }, []);
 
   return (
-    <div className="admin-container">
-      <AdminSidebar />
+    <div className="adminn-container">
+
+       <div className="feed-side-bar-div">
+            <AdminSidebar />
+          </div>
       <div className="userslist-container">
         <h2 id="stats">Users List</h2>
         <div className="search-bar-admin-panel-user">

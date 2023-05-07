@@ -35,6 +35,11 @@ import QueryPrac from "./components/QueryFeed";
 import Prac from "./components/prac";
 import OwnProfile from "./components/OwnProfileData";
 import Edit_Profile from "./components/Edit_Profile";
+import UsersChart from "./components/UsersChart";
+import AdminFeedback from "./components/AdminFeedback";
+import Adminuseless from "./components/Adminuseless";
+import Adminpostmodal from "./components/Adminpostmodal";
+
 
 // context API
 export const userContext = createContext();
@@ -68,7 +73,12 @@ const Routing = () => {
       <Route path="/adminDashboard" element={<AdminDashboard />} />
 
       <Route path="/adminreport" element={<AdminReport />} />
+      
+      <Route path="/adminfeedback" element={<AdminFeedback />} />
+
       <Route path="/userslist" element={<AdminUserslist />} />
+      <Route path="/useless" element={<Adminuseless />} />
+
     </Routes>
   );
 };
@@ -78,16 +88,8 @@ function App() {
   return (
     <>
       <userContext.Provider value={{ state, dispatch }}>
-        {/* <NavBar /> */}
-        {/* <Dashboard_Header className="sa"/> */}
-        {/* <AdminDashboard/> */}
-        {/* <Chart/> */}
-        {/* <Trydata /> */}
-        {/* <AdminSidebar/> */}
-        {/* <AdminPanel/> */}
-        {/* <AdminReport/> */}
-        {/* <AdminUserslist/> */}
         <Routing />
+        {/* <Adminpostmodal/> */}
       </userContext.Provider>
     </>
   );
