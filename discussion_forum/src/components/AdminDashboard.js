@@ -11,25 +11,17 @@ import Chart from "./Chart";
 import UsersChart from "./UsersChart";
 import AdminSidebar from "./AdminSidebar";
 import { useState, useEffect } from "react";
-
-// chart options
-const user_options = {
-  title: "Student-Teacher Diagram",
-};
-
-const department_options = {
-  title: "Department Wise Users Diagram",
-};
-
-const feedback_options = {
-  title: "Category Wise  Diagram",
-};
+import NavBar from "./NavBar";
 
 const AdminDashboard = () => {
   const [userCount, setUserCount] = useState(0);
   const [queryCount, setQueryCount] = useState(0);
   const [pieData, setPieData] = useState([]);
   const [pieDataCategory, setpieDataCategory] = useState([]);
+  const [pieReportdata, setpieReportdata] = useState([]);
+  const [monthYearArray, setmonthYearArray] = useState([]);
+  // const [newState, setNewState] = useState([]);
+  const [newStatecategory, setnewStatecategory] = useState([]);
 
   const getUserscount = async () => {
     try {
@@ -80,6 +72,7 @@ const AdminDashboard = () => {
       const data = await response.json();
 
       const dataArray = Object.values(data.data);
+
       let counttCpp = 0;
       let counttJava = 0;
       let counttPython = 0;
@@ -114,18 +107,19 @@ const AdminDashboard = () => {
     }
   };
 
+  //////////////////////////////////////////////// find report category ////////////////////////////////
 
-   //////////////////////////////////////////////// find report category ////////////////////////////////
-
-   const getReportCategory = async () => {
+  const getReportCategory = async () => {
     try {
       const response = await fetch("/findreport");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log("new====", data)
-      // const dataArray = Object.values(data.data);
+
+      const dataArrayR = Object.values(data.data);
+
+      // console.log("new====---------", dataArrayR)
 
       let counttOff = 0;
       let counttInap = 0;
@@ -134,60 +128,139 @@ const AdminDashboard = () => {
       let counttIreleve = 0;
       let counttOther = 0;
 
+      dataArrayR.forEach((docs) => {
+        if (docs.Category === "offensive") {
+          counttOff += 1;
+        }
+        if (docs.Category === "Inappropriate") {
+          counttInap += 1;
+        }
+        if (docs.Category === "Abusive") {
+          counttAbus += 1;
+        }
+        if (docs.Category === "Bullying") {
+          counttBuly += 1;
+        }
+        if (docs.Category === "Irrelevant") {
+          counttIreleve += 1;
+        }
+        if (docs.Category === "Other") {
+          counttOther += 1;
+        }
+      });
 
+      // console.log("new====---------myyy", counttOff);
 
-      // dataArray.forEach((docs) => {
-      //   if (docs.QueryCategory === "offensive") {
-      //     counttOff += 1;
-      //   }
-      //   if (docs.QueryCategory === "Inappropriate") {
-      //     counttInap += 1;
-      //   }
-      //   if (docs.QueryCategory === "Abusive") {
-      //     counttAbus += 1;
-      //   }
-      //   if (docs.QueryCategory === "Bullying") {
-      //     counttBuly += 1;
-      //   }
-      //   if (docs.QueryCategory === "Irrelevant") {
-      //     counttIreleve += 1;
-      //   }
-      //   if (docs.QueryCategory === "Other") {
-      //     counttOther += 1;
-      //   }
-      
-      // });
+      let array3 = [
+        { name: "Offensive", value: counttOff },
+        { name: "Inappropriate", value: counttInap },
+        { name: "Abusive", value: counttAbus },
+        { name: "Bullying", value: counttBuly },
+        { name: "Irrelevant", value: counttIreleve },
+        { name: "Other", value: counttOther },
+      ];
 
-      // let array2 = [
-      //   { name: "C++", value: counttCpp },
-      //   { name: "Java", value: counttJava },
-      //   { name: "Python", value: counttPython },
-      //   { name: "Dotnet", value: counttdotnet },
-      // ];
-
-      // setpieDataCategory(array2);
-      // console.log(`Found ${countt} documents with category "C++"`);
+      setpieReportdata(array3);
     } catch (error) {
       console.error("Error fetching query count:", error);
     }
   };
 
+  //////////////////////////////////////////////// find users with date ////////////////////////////////
+
+  const getUserswithdate = async () => {
+    try {
+      const response = await fetch("/finduserwithdate");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+
+      const monthYearArray = data.map((dateObject) => {
+        const date = new Date(dateObject.Date);
+        const month = date.toLocaleString("default", { month: "long" });
+        // const year = date.getFullYear();
+        return `${month} `;
+      });
+
+      
+      // console.log("cat", monthYearArray);
+      
+      const formattedData = monthYearArray.map((month, index) => {
+        return { index, month };
+      });
+      // console.log("zzzzz", formattedData)
+      setmonthYearArray(formattedData);
+        //   const filteredData = data.filter((cat) => cat.Month === month);
+      // const categories = data.map((doc) => {
+      //   return doc.Category;
+      // });
+      
+      // Now the 'categories' array contains the 'Category' values from the 'data' array
+      // console.log("data", formattedData);
+      // console.log("cat", categories);
+
+      
+      // console.log("fitler" , cat);
+
+      // const formattedData = monthYearArray.map((month, index) => {
+      //   const category = data.Category[index]
+    
+      //   return {
+      //     index,
+      //     month,
+      //     category
+      //   };
+      // });
+      
+      // console.log(formattedData);
+      
+      
+      // console.log(formattedData);
+      
+      
+      
+      
+      // console.log("filteredData", formattedData);
+      
+     
+      // setnewStatecategory(categories);
+      
+
+
+    } catch (error) {
+
+      console.error("Error fetching query count:", error);
+    }
+  };
+ 
+  // const mergedArray = monthYearArray.concat(newStatecategory);
+
+  // console.log("monthYearArray", monthYearArray)
+  // console.log("newStatecategory", newStatecategory)
+
+// console.log("newarray-----", mergedArray)
+
 
   useEffect(() => {
+    getUserswithdate();
+    
     getUserscount();
     getQuerycount();
     getQueryCategory();
+    getReportCategory();
   }, []);
-
 
   return (
     <>
       <div className="admin-container">
+        
         <AdminSidebar />
 
         {/**************************************** Dashboard  */}
 
         <div className="dashbooard-container">
+        {/* <NavBar/> */}
           <div className="upfirst">
             <h2 id="statss">Statistics</h2>
             <div className="upper-portion">
@@ -211,7 +284,10 @@ const AdminDashboard = () => {
           <div className="lower1">
             <h3 className="graph-head"> Users Graph</h3>
 
-            <UsersChart />
+
+            <UsersChart data={monthYearArray} />
+
+
             <div className="piecharts">
               <div className="graph1">
                 <h3 className="graph-head">Category wise Queries</h3>
@@ -219,7 +295,7 @@ const AdminDashboard = () => {
               </div>
               <div className="graph1">
                 <h3 className="graph-head"> Category wise Reports</h3>
-                <Chart data={pieData} />
+                <Chart data={pieReportdata} />
               </div>
             </div>
           </div>

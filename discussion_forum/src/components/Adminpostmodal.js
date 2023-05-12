@@ -31,7 +31,10 @@ const Adminpostmodal = ({ onClose, PostID }) => {
   };
 
   const deletePost = async () => {
+   
     try {
+       
+
       await fetch(`/deletequery/${PostID}`, {
         method: "DELETE",
         headers: {

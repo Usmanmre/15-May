@@ -26,7 +26,7 @@ const AdminUserslist = () => {
       // }
       data = await response.json();
       setuserList(data);
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.error("Error fetching users list:", error);
     }

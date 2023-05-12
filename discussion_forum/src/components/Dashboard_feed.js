@@ -25,8 +25,6 @@ import Edit_Profile from "./Edit_Profile";
 const Dashboard_feed = ({QueriesData}) => {
   const navigate = useNavigate();
 
-  console.log("ttttttttttttttt"+QueriesData?.PostID);
-  // const Upvote = QueriesData?.Upvote;
 
    const [queryData, setQueryData] = useState({
      

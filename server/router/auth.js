@@ -4,7 +4,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Authenticate = require("../middleware/authenticate");
 const cookieParser = require("cookie-parser");
-
+const mongoose = require('mongoose');
+// const ObjectId = mongoose.Types.ObjectId;
 const Token = require("../models/token");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
@@ -26,7 +27,25 @@ const router = express.Router();
 
 //##################### Admin ###############################
 
-// total user find API
+
+
+// //////////////////////////////total user find API
+
+
+router.get("/usersCount", async (req, res) => {
+  User.find((err, docs) => {
+    if (docs) {
+      res.send({ status: 200, data: docs });
+
+    } else {
+      res.send({ status: 500, error: err });
+    }
+  });
+});
+
+
+// //////////////////////////////total query find API
+
 
 router.get("/queryCount", async (req, res) => {
   QueryData.find((err, docs) => {
@@ -38,17 +57,7 @@ router.get("/queryCount", async (req, res) => {
   });
 });
 
-router.get("/usersCount", async (req, res) => {
-  User.find((err, docs) => {
-    if (docs) {
-      res.send({ status: 200, data: docs });
-      console.log("bbbbbb", data)
-    } else {
-      res.send({ status: 500, error: err });
-    }
-  });
-});
- 
+
 ///////////////////////// show user query to admin API //////////////////////
 
 router.get("/showquery", async (req, res) => {
@@ -120,6 +129,57 @@ router.get("/queriesCount", async (req, res) => {
   const queryCount = QueryData.countDocuments;
   res.send({ queryCount });
 });
+
+
+///////////////////////////////// Get users with date ////////////////////////////
+
+router.get("/finduserwithdate", async (req, res) => {
+  try {
+    const users = await User.find({}, { Date: 1, Category:1, Email:1, id: 1 });
+    const formattedUsers = users.map(user => {
+      const formattedDate = formatDate(user.Date); // Format the date using a helper function
+      return { id: user.id, Date: formattedDate, Category: user.Category };
+    });
+    res.send(formattedUsers);
+  } catch (error) {
+    console.error("Error fetching find user with date:", error);
+    res.status(500).send({ status: 500, error: error });
+  }
+});
+
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const day = ("0" + date.getDate()).slice(-2);
+  return year + "-" + month + "-" + day;
+}
+
+
+
+//////////////// delete document from MO DB ///////////////
+
+const { ObjectId } = require('bson');
+
+router.delete('/deletequery/:id', async (req, res) => {
+  try {
+
+    const postId = req.params.id;   
+
+    const validPostId = ObjectId(postId)
+    
+    console.log("muuuuuuuuu", validPostId)
+
+    // Delete the post from the database
+    await QueryData.findByIdAndDelete(validPostId);
+
+    res.status(200).json({ message: 'Post deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
+
 
 //######################  Client #########################
 

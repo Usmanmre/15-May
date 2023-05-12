@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    Category: {
+        type: String,
+        default: "",
+    },
     Phone: {
         type: String,
         default: "",
@@ -64,11 +68,8 @@ const userSchema = new mongoose.Schema({
 userSchema.pre('save',async function(next) {
 if(this.isModified('Password'))
 {
-    console.log("hash mein a gya ha ++++++++");
-    console.log("in PRE ,,,, Pass: " + this.Password +" CP:" + this.Confirm_Password);
     this.Password = await bcrypt.hash(this.Password,12);
     this.Confirm_Password= await bcrypt.hash(this.Confirm_Password,12);
-    console.log("at the end of PRE ,,,, Pass: " + this.Password +" CP:" + this.Confirm_Password);
 
 }
 next();
