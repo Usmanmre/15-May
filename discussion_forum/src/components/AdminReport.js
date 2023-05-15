@@ -47,10 +47,11 @@ const AdminReport = () => {
   return (
     <>
       <div className="admin-container">
-        <div className="report-container">
-          <div className="side-bar-div">
+      <div className="side-bar-div">
             <AdminSidebar />
           </div>
+        <div className="report-container">
+          
           <div className="all-reports">
             <h5 id="report-stats-heading">Reports</h5>
      

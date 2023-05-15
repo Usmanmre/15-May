@@ -17,10 +17,12 @@ const Adminuseless = ({ QueriesData }) => {
     setIsModalOpen(false);
   };
 
+  console.log(QueriesData)
   function getModaldata  () {
     openModal();
     setSelectedPostID(QueriesData.PostID)
   }
+
 
   return (
     <div className="admin-useless-container">

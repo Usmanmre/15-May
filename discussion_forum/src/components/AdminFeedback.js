@@ -43,10 +43,11 @@ const AdminFeedback = () => {
   return (
     <>
       <div className="admin-container">
-        <div className="feedback-container">
-          <div className="feed-side-bar-div">
+      <div className="feed-side-bar-div">
             <AdminSidebar />
           </div>
+        <div className="feedback-container">
+        
           <div className="all-reports">
             <h5 id="feedback-stats-head">Feedback</h5>
             <div className="col-md-12 col-lg-12  col-xl-12">

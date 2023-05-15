@@ -74,7 +74,7 @@ router.get("/showquery", async (req, res) => {
 
 router.get("/usersList", async (req, res) => {
   try {
-    const users = await User.find({}, { name: 1, Email: 1, id: 1 });
+    const users = await User.find({}, { name: 1, Email: 1, id: 1, Category:1, isEnabled:1});
     res.send(users);
   } catch (error) {
     console.error("Error fetching users list:", error);
@@ -130,7 +130,35 @@ router.get("/queriesCount", async (req, res) => {
   res.send({ queryCount });
 });
 
+//////////////////////////////////Contact Admin//////////////////////////
 
+// router.get("/contactadmin", async (req, res) => {
+//   try {
+//     const users = await Contact.find({}.sort({_id: -1,}));
+//     // const formattedUsers = users.map(user => {
+//     //   const formattedDate = formatDate(user.Date); // Format the date using a helper function
+//     //   return {  name: Contact.name, Date: formattedDate, Email: Contact.Email, Subject: Contact.Subject, Message: Contact.Message };
+//     // });
+
+//     console.log("zzzzzz", users  )
+//     res.status(200).send(users);
+//   } catch (error) {
+//     console.error("Error fetching users who contacted the admin:", error);
+//     res.status(500).send({ status: 500, error: error });
+//   }
+// });
+
+router.get("/contactadmin", async (req, res) => {
+  try {
+    const contact = await Contact.find().sort({_id: -1,});;
+    // console.log(contact);
+      res.status(200).send(contact);
+
+  } catch (error) { 
+    console.error("Error fetching Contact list:", error);
+    res.status(400).send({status: 400, error: error});
+  }
+});
 ///////////////////////////////// Get users with date ////////////////////////////
 
 router.get("/finduserwithdate", async (req, res) => {
@@ -153,6 +181,46 @@ function formatDate(date) {
   const day = ("0" + date.getDate()).slice(-2);
   return year + "-" + month + "-" + day;
 }
+
+
+//////////////////////////Update user status ////////////////////////
+
+// Assuming you have an Express app initialized and running
+
+// PUT /users/:email
+router.put(`/users`, (req, res) => {
+
+  const email = req.query.email;
+  const isEnabled = req.body.isEnabled;
+  console.log('.....', email, isEnabled)
+
+  // Update the user's status in your database or any other storage
+  // Here, we assume you have a user model/schema and use Mongoose to interact with MongoDB
+  User.findOne({ email }, (err, user) => {
+    if (err) {
+      console.error('Error finding user:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Update the user's isEnabled property
+    user.isEnabled = !user.isEnabled;
+
+    // Save the updated user
+    user.save((err) => {
+      if (err) {
+        console.error('Error updating user:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+
+      // Return the updated user
+      res.status(200).json(user);
+    });
+  });
+});
 
 
 
@@ -590,7 +658,7 @@ router.post("/Forgot_Pass", async (req, res) => {
         // console.log("user reg successfully");
         return res
           .status(201)
-          .json({ message: "An email send to your account please verify." });
+          .json({ message: "An email send to your account please verify. auth backend" });
       }
     } else {
       return res.status(400).json({ error: "Invalid Data" });
@@ -627,7 +695,7 @@ router.post("/signup", async (req, res) => {
       } else {
         let Photo = "../images/avatar.png";
         user = new User({ name, Email, Password, Confirm_Password, Photo });
-        console.log("hash mein jane se pehle ++++++++");
+        // console.log("hash mein jane se pehle ++++++++");
         await user.save();
 
         // console.log(  `===================    ${user._id} ++ ${user.Email} ==========` );
@@ -647,6 +715,7 @@ router.post("/signup", async (req, res) => {
     } else {
       return res.status(400).json({ error: "Invalid Data" });
     }
+
   } catch (err) {
     console.log(err);
     return res.status(400).json({ error: "Invalid Data" });
@@ -657,30 +726,29 @@ router.post("/signup", async (req, res) => {
 
 router.get("/users/:id/verify/:token", async (req, res) => {
   try {
-    console.log(
-      " //////////////// *** " + req.params.id + "iiiii" + req.params.token
-    );
+    // console.log(
+    //   " //////////////// *** " + req.params.id + "iiiii" + req.params.token
+    // );
     const user = await User.findOne({ _id: req.params.id });
     if (!user) {
       return res.status(400).send({ message: "Invalid Link" });
     }
 
-    console.log("22222222222222 ++ " + user._id);
+    // console.log("22222222222222 ++ " + user._id);
 
     const token = await User.findOne({
       _id: user._id,
       "Tokens.token": req.params.token,
     });
 
-    console.log("333333333333333333333");
 
     if (!token) {
-      console.log("[[[[[[[[[[[[  Token dont exist");
+      // console.log("[[[[[[[[[[[[  Token dont exist");
       return res.status(400).send({ message: "Invalid Link" });
     }
 
     if (token) {
-      console.log("[[[[[[[[[[[[  Token  exist");
+      // console.log("[[[[[[[[[[[[  Token  exist");
     }
 
     const filter = { _id: user._id };
@@ -707,67 +775,34 @@ router.get("/users/:id/verify/:token", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { Email, Password } = req.body;
 
-  // const user = await User.findOne({ _id: req.params.id });
-
   try {
     if (!Email || !Password) {
-      console.log("missing login credentials");
-
-      return res
-        .status(400)
-        .json({ error: "please filled the field properly" });
+      return res.status(400).json({ error: "please fill the fields properly" });
     }
 
-    userExist = await User.findOne({ Email: Email });
+    const userExist = await User.findOne({ Email: Email });
     if (userExist) {
-      console.log("Email already Exist");
+      console.log("Email already exists");
       const isMatch = await bcrypt.compare(Password, userExist.Password);
 
       if (!isMatch) {
-        console.log("pass incorrect");
-
+        console.log("Incorrect password");
         return res.status(400).json({ message: "Invalid Credentials" });
       }
 
       const verify = userExist.verified;
-      console.log(verify);
+      console.log("vvvvvv", verify);
 
-      if (!verify) {
-        token = await userExist.generateAuthToken();
-        const url = `${process.env.BASE_URL}users/${userExist._id}/verify/${token}`;
-        await sendEmail(userExist.Email, "verify Email", url);
-        console.log("An Email sent to your account please Verifyyyyyyyyyy");
-        return res
-          .status(403)
-          .send({ message: "An Email sent to your account please Verify" });
-      } else {
-        token = await userExist.generateAuthToken();
-        res.cookie("jwToken", token, {
-          expires: new Date(Date.now() + 25892000000),
-          httpOnly: true,
-        });
+      /////////////////////////// User Status //////////////
 
-        res.cookie("Name", userExist.name, {
-          expires: new Date(Date.now() + 25892000000),
-          httpOnly: false,
-        });
-
-        res.cookie("Email", userExist.Email, {
-          expires: new Date(Date.now() + 25892000000),
-          httpOnly: false,
-        });
-
-        // console.log("" + userExist);
-        console.log("successfully login");
-
-        return res.status(200).json(
-          // { message: "User Signin Successfully" }
-          userExist
-        );
+      if (!userExist.isEnabled) {
+        return res.status(500).send({ message: "You're disabled, coordinate with admin" });
       }
-    } else {
-      console.log("email is incorrect");
+      console.log("isEnabled", userExist.isEnabled);
 
+      // Rest of the code...
+    } else {
+      console.log("Email is incorrect");
       return res.status(400).json({ message: "Invalid Credentials" });
     }
   } catch (err) {
@@ -786,25 +821,7 @@ let resp;
 router.get("/login/success", async (req, res) => {
   console.log("----------------------------");
   if (req.user) {
-    console.log(req.user);
-    // console.log("----------------------------");
-
-    // console.log(req.user.name);
-    // 	console.log("----------------------------");
-
-    // console.log(req.user.emails[0].value);
-    // resp = req.user;
-    // console.log("33");
-
-    // user = new User({ name: req.user.name.givenName,
-    //   Email: req.user.emails[0].value,
-    //   Password,
-    //   Confirm_Password,
-    //   Photo: req.user.picture,
-    //   Verified: "True",
-    //  });
-    // console.log("hash mein jane se pehle ++++++++");
-    // await user.save();
+    
 
     res.cookie("Name", req.user.name.givenName, {
       expires: new Date(Date.now() + 25892000000),

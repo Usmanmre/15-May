@@ -88,21 +88,23 @@ flex-direction: column;
   padding-bottom: 1%;
   margin: 1.5em;
   border-radius: .2em;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .admin-panel-users-list-header {
   display: grid;
-  grid-template-columns: 1fr 1fr 0.5fr; 
+  grid-template-columns: .5fr .5fr 0.5fr 0.3fr; 
   padding-right: 2em;
   padding-left: 1em;
+  /* background-color: brown; */
+  
 }
 .admin-panel-users-list-header-options {
-  background-color: #eaeaea;
-  font-size: 1.2rem;
+  background-color: #8884d8; 
+   font-size: 1.2rem;
   font-weight: bold;
   margin-left: 1em;
-
+ font-size: .9rem;
   margin-top: 2em;
   padding: 0.7em;
   border-radius: 4px;
@@ -120,19 +122,20 @@ flex-direction: column;
 .grid-item{
   /* background-color: aqua; */
   display: grid;
-  grid-template-columns: 1fr 1fr 0.5fr; 
+  grid-template-columns: .5fr .5fr 0.5fr .3fr; 
 
   margin-left: 1em;
   /* width: 50em; */
 }
 .display-userlist-option {
   font-size: 1rem;
-  /* background-color: beige; */
+  background-color: rgb(227, 227, 227);
   margin-left: 1.2rem;
   padding: 0.7rem;
   border: 1px solid #dedede;
   margin-top: 1em;
   /* background-color: bisque; */
+  color: black;
   border-radius: 5px;
 }
 
@@ -158,7 +161,8 @@ flex-direction: column;
   background-color: rgb(255, 0, 0);
   color: white;
 }
-#email{
+
+#category{
   color: black;
   font-size: 1rem;
 
@@ -166,7 +170,7 @@ flex-direction: column;
 #email:hover{
   font-size: 1rem;
   font-weight: bold;
-  /* background-color: rgb(255, 204, 0); */
+  background-color: rgb(255, 204, 0);
   /* color: white; */
   margin-left: 1.2rem;
   padding: 0.7rem;

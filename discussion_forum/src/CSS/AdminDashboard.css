@@ -59,7 +59,7 @@ height: fit-content;
   padding-bottom: 1%;
   margin: 1.5em;
   border-radius: .2em;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 .upper-portion {
   height: 10em;
@@ -81,8 +81,10 @@ height: fit-content;
   display: flex;
   flex-direction: row;
   /* background-color: aqua; */
-  justify-content: space-around;
-  flex:0.7;
+  
+  justify-content: space-evenly;
+  flex:1;
+  /* padding-left: 2em; */
 }
 .upper2{
   display: flex;

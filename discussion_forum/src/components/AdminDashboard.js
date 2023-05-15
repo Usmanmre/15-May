@@ -25,7 +25,7 @@ const AdminDashboard = () => {
 
   const getUserscount = async () => {
     try {
-      const response = await fetch("/usersCount");
+      const response = await fetch("/ ");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -190,7 +190,9 @@ const AdminDashboard = () => {
         return { index, month };
       });
       // console.log("zzzzz", formattedData)
-      setmonthYearArray(formattedData);
+      
+
+      // console.log(".....", formattedData)
         //   const filteredData = data.filter((cat) => cat.Month === month);
       // const categories = data.map((doc) => {
       //   return doc.Category;
@@ -203,18 +205,23 @@ const AdminDashboard = () => {
       
       // console.log("fitler" , cat);
 
-      // const formattedData = monthYearArray.map((month, index) => {
-      //   const category = data.Category[index]
+    const getCategory = data.map((doc)=>{
+       return doc.Category;
+    })
+      
     
-      //   return {
-      //     index,
-      //     month,
-      //     category
-      //   };
-      // });
-      
-      // console.log(formattedData);
-      
+    // const concatArray = formattedData.concat(getCategory)
+    
+    const mergedData = formattedData.map((obj, index) => {
+      return {
+        index: obj.index,
+        month: obj.month,
+        category: getCategory[index]
+      };
+    });
+
+    
+    setmonthYearArray(mergedData);
       
       // console.log(formattedData);
       
@@ -270,6 +277,20 @@ const AdminDashboard = () => {
 
                   <div className="card-inside-content">{userCount}</div>
                   <div className="card-inside-head">Total Users</div>
+                </div>
+                
+                <div className="admin-upper-card">
+                  <FontAwesomeIcon className="icon" icon={faUser} />
+
+                  <div className="card-inside-content">{userCount}</div>
+                  <div className="card-inside-head">Total Students</div>
+                </div>
+
+                <div className="admin-upper-card">
+                  <FontAwesomeIcon className="icon" icon={faUser} />
+
+                  <div className="card-inside-content">{userCount}</div>
+                  <div className="card-inside-head">Total Teachers</div>
                 </div>
                 <div className="admin-upper-card">
                   <FontAwesomeIcon className="icon" icon={faCircleQuestion} />

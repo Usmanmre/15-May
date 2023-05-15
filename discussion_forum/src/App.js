@@ -39,6 +39,7 @@ import UsersChart from "./components/UsersChart";
 import AdminFeedback from "./components/AdminFeedback";
 import Adminuseless from "./components/Adminuseless";
 import Adminpostmodal from "./components/Adminpostmodal";
+import AdminContact from "./components/AdminContact";
 
 
 // context API
@@ -78,6 +79,8 @@ const Routing = () => {
 
       <Route path="/userslist" element={<AdminUserslist />} />
       <Route path="/useless" element={<Adminuseless />} />
+      <Route path="/admincontact" element={<AdminContact />} />
+
 
     </Routes>
   );
@@ -89,6 +92,7 @@ function App() {
     <>
       <userContext.Provider value={{ state, dispatch }}>
         <Routing />
+        {/* <AdminContact/> */}
         {/* <Adminpostmodal/> */}
       </userContext.Provider>
     </>

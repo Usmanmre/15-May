@@ -34,6 +34,11 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    
+    isEnabled:{
+         type:Boolean,
+         default:true
+    },
     Category: {
         type: String,
         default: "",

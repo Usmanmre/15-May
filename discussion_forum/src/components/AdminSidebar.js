@@ -143,6 +143,11 @@ const AdminSidebar = () => {
                   Feedback
                 </CDBSidebarMenuItem>
               </NavLink>
+              <NavLink exact to="/admincontact"  activeClassName="activeClicked">
+                <CDBSidebarMenuItem className="sidebar" icon="flag">
+                  Contact Us  
+                </CDBSidebarMenuItem>
+              </NavLink>
               <NavLink exact to="/hero404" activeClassName="activeClicked">
                 <CDBSidebarMenuItem className="sidebar" icon="sign-out-alt">
                   Logout

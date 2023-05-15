@@ -2,6 +2,7 @@ import React ,{useState,useContext} from "react";
 import { Form, Button, Container, Figure, Row, Col } from "react-bootstrap";
 import SVG_1 from "../images/svg9.svg";
 import googlee from "../images/google_svg.svg";
+import Swal from 'sweetalert2';
 
 import google from "../images/google.png";
 import Modal from 'react-bootstrap/Modal'
@@ -29,8 +30,21 @@ function Login() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const handleButtonClick = () => {
+
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Your account is suspended by Admin!',
+      // footer: '<a href="">Why do I have this issue?</a>'
+    });
+    
+  };
+
 
   const loginUser = async(e) =>{
+
+    
     e.preventDefault();
 
     const res = await fetch('/login', {
@@ -45,10 +59,13 @@ function Login() {
 
     const data =await res.json();
 
+    
+
     if(res.status === 400 || !res) {
       window.alert("Invalid Credentials");
-    }else if(res.status === 403 || !res) {
-      window.alert("an email send to your account please verify");
+    }else if(res.status === 500 || !res) {
+      
+      handleButtonClick();
     }else{
       // localStorage.setItem('Email', JSON.stringify(Email))
       // localStorage.setItem('name', JSON.stringify(data.name))

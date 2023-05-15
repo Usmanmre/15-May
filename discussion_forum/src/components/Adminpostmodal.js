@@ -75,8 +75,7 @@ const Adminpostmodal = ({ onClose, PostID }) => {
           <Button variant="secondary" onClick={onClose}>
             Close
           </Button>
-          <Button variant="primary" style={{ backgroundColor: 'red' }} onClick={deletePost}>
-            Accept
+          <Button variant="primary" style={{ backgroundColor: 'red' }} >  Accept
           </Button>
           <Button variant="primary" style={{ backgroundColor: 'green' }}>
             Decline
