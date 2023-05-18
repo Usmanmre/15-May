@@ -49,7 +49,7 @@ height: fit-content;
 
 
 #statss{
-  background-color: #8884d8;
+  background-color: #577590;
   width: fit-content;
   height: fit-content;
   font-weight: 500;
@@ -60,6 +60,7 @@ height: fit-content;
   margin: 1.5em;
   border-radius: .2em;
   font-size: 1rem;
+  color: white;
 }
 .upper-portion {
   height: 10em;
@@ -91,7 +92,8 @@ height: fit-content;
   flex:0.2;
 }
 .admin-upper-card {
-  background-color: #8884d8;
+  background-color: #577590;
+  color: white;
   height: 7em;
   width: 12em;
   border-radius: 0.3em;
@@ -142,24 +144,66 @@ height: fit-content;
 
 
 .piecharts{
-  /* background-color: rgb(0, 255, 0); */
+  background-color: #fafafa;
+  box-shadow: 1px 1px 5px #c6c6c6;
+
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  width: 65%;
-  padding-top: 7%;
+  justify-content: space-around;
+  width: 80%;
+  margin-top: 3%;
+  margin-bottom: 5%;
+
+  padding-top: 3%;
   padding-bottom: 3%;
 
 }
+
 .graph1 {
 display: flex;
 flex-direction: column;
 align-items: center;
 }
-.graph3 {
-display: flex;
-flex-direction: column;
-align-items: center;
+.div1{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+
+h3{
+  background-color: #f5efef;
+  font-style: normal;
+  padding: .9em;
+  border-radius: .7em;
+
+}
+  
+
+#feedback-graph{
+
+  display: flex ;
+  flex-direction: row;
+  justify-content: center;
+  /* background-color: #8884d8; */
+  align-items: end;
+  padding-bottom: -1em;
+  width: 20em;
+
+
+}
+
+.review-div{
+  background-color: #f5efef;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1em;
+  flex-direction: column;
+  padding: 1em;
+  border-radius: .7em;
+  margin-bottom: 4em;
+
 }
 .div2 {
   height: 10em;

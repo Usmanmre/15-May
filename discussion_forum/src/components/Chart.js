@@ -8,7 +8,7 @@ const data = [
   { name: "Group D", value: 200 }
 ];
 
-const COLORS = ["#0088FE", "#18b5d9", "#8884d8", "#FF8042"];
+const COLORS = ["#f7a072", "#ff4d6d", "#9a8c98", "#577590"];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -47,7 +47,7 @@ const Chart = (props) => {
         labelLine={false}
         label={renderCustomizedLabel}
         outerRadius={80}
-        fill="#8884d8"
+        fill="#f7a072"
         dataKey="value"
       >
         {data.map((entry, index) => (

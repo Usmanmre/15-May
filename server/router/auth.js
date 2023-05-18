@@ -74,8 +74,8 @@ router.get("/showquery", async (req, res) => {
 
 router.get("/usersList", async (req, res) => {
   try {
-    const users = await User.find({}, { name: 1, Email: 1, id: 1, Category:1, isEnabled:1});
-    res.send(users);
+    const users = await User.find({}, { name: 1, Email: 1, id: 1, Category:1, isEnabled:1, Photo:1});
+    res.send(users)
   } catch (error) {
     console.error("Error fetching users list:", error);
     res.status(500).send({ status: 500, error: error });
@@ -188,15 +188,14 @@ function formatDate(date) {
 // Assuming you have an Express app initialized and running
 
 // PUT /users/:email
-router.put(`/users`, (req, res) => {
+router.put(`/updateUser`, (req, res) => {
+
+
 
   const email = req.query.email;
-  const isEnabled = req.body.isEnabled;
-  console.log('.....', email, isEnabled)
-
-  // Update the user's status in your database or any other storage
-  // Here, we assume you have a user model/schema and use Mongoose to interact with MongoDB
-  User.findOne({ email }, (err, user) => {
+  const body = req.body;
+  
+  User.findOneAndUpdate({ Email: email }, body, (err, user) => {
     if (err) {
       console.error('Error finding user:', err);
       return res.status(500).json({ error: 'Internal server error' });
@@ -223,10 +222,10 @@ router.put(`/users`, (req, res) => {
 });
 
 
-
 //////////////// delete document from MO DB ///////////////
 
 const { ObjectId } = require('bson');
+const { request } = require("http");
 
 router.delete('/deletequery/:id', async (req, res) => {
   try {

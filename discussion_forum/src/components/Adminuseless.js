@@ -17,7 +17,7 @@ const Adminuseless = ({ QueriesData }) => {
     setIsModalOpen(false);
   };
 
-  console.log(QueriesData)
+  // console.log(QueriesData)
   function getModaldata  () {
     openModal();
     setSelectedPostID(QueriesData.PostID)
@@ -30,7 +30,7 @@ const Adminuseless = ({ QueriesData }) => {
         <div className="admin-useless-background">
           <div className="report1">
             <div className="info">
-              <img className="avatar" src={avatar} alt="" />
+              {/* <img className="avatar" src={avatar} alt="" /> */}
               <div className="name">{QueriesData.ID}</div>
             </div>
             <div className="main-div">

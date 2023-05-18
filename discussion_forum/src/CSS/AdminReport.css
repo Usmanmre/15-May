@@ -53,10 +53,11 @@
 
 
 
-#report-stats-heading{
-      background-color: #8884d8;
+h5{
+      background-color: #577590;
     width: fit-content;
     height: fit-content;
+    color: white;
     font-weight: 500;
     padding-left: 2%;
     padding-right: 2%;
@@ -99,7 +100,7 @@
 }
 .report-header{
     border-radius: 4px;
-    background-color: #8884d8;
+    background-color: #577590;
     height: max-content;
     box-shadow: 1px 1px 3px #878787; 
 
@@ -108,6 +109,7 @@
     padding: .5em;
     font-weight: 500;
     margin-right: 2em;
+    color: white;
 
     
 }
@@ -115,7 +117,7 @@
 .header-option{
     font-size: 1rem;
     font-weight: 700;
-    color: #272727;
+    color: #ffffff;
     margin-left: 1em;
 }
 
@@ -190,7 +192,7 @@ align-items: center;
         /* padding-left: 2rem; */
     }
     #view-btn{
-        background-color: #272727;
+        background-color: #c5c5c5;
         padding-left: .5rem;
         padding-right: .5rem;
         margin-top: .3rem;

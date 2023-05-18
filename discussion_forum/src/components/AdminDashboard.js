@@ -15,23 +15,45 @@ import NavBar from "./NavBar";
 
 const AdminDashboard = () => {
   const [userCount, setUserCount] = useState(0);
+  const [countStudents, setcountStudents] = useState(0);
+  const [countTeachers, setcountTeachers] = useState(0);
+  const [userFeedback, setuserFeedback] = useState();
+  const [userReview, setuserReview] = useState([]);
+
+
+  const [feedbackReview, setfeedbackReview] = useState();
+
   const [queryCount, setQueryCount] = useState(0);
   const [pieData, setPieData] = useState([]);
   const [pieDataCategory, setpieDataCategory] = useState([]);
   const [pieReportdata, setpieReportdata] = useState([]);
+  const [pieFeedback, setpieFeedback] = useState([]);
+
   const [monthYearArray, setmonthYearArray] = useState([]);
   // const [newState, setNewState] = useState([]);
   const [newStatecategory, setnewStatecategory] = useState([]);
 
   const getUserscount = async () => {
     try {
-      const response = await fetch("/ ");
+      const response = await fetch("/usersCount ");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
 
       setUserCount(data.data.length);
+
+      const allUsers = data.data;
+
+      var countStd = 0;
+      var countTea = 0;
+
+      allUsers.forEach((user) =>
+        user.Category === "Student" ? countStd++ : countTea++
+      );
+
+      setcountStudents(countStd);
+      setcountTeachers(countTea);
     } catch (error) {
       console.error("Error fetching users count:", error);
     }
@@ -121,43 +143,28 @@ const AdminDashboard = () => {
 
       // console.log("new====---------", dataArrayR)
 
-      let counttOff = 0;
-      let counttInap = 0;
-      let counttAbus = 0;
-      let counttBuly = 0;
-      let counttIreleve = 0;
-      let counttOther = 0;
+      const categoryCounts = {
+        offensive: 0,
+        Inappropriate: 0,
+        Abusive: 0,
+        Bullying: 0,
+        Irrelevant: 0,
+        Other: 0,
+      };
 
       dataArrayR.forEach((docs) => {
-        if (docs.Category === "offensive") {
-          counttOff += 1;
-        }
-        if (docs.Category === "Inappropriate") {
-          counttInap += 1;
-        }
-        if (docs.Category === "Abusive") {
-          counttAbus += 1;
-        }
-        if (docs.Category === "Bullying") {
-          counttBuly += 1;
-        }
-        if (docs.Category === "Irrelevant") {
-          counttIreleve += 1;
-        }
-        if (docs.Category === "Other") {
-          counttOther += 1;
+        if (docs.Category in categoryCounts) {
+          categoryCounts[docs.Category] += 1;
         }
       });
 
-      // console.log("new====---------myyy", counttOff);
-
       let array3 = [
-        { name: "Offensive", value: counttOff },
-        { name: "Inappropriate", value: counttInap },
-        { name: "Abusive", value: counttAbus },
-        { name: "Bullying", value: counttBuly },
-        { name: "Irrelevant", value: counttIreleve },
-        { name: "Other", value: counttOther },
+        { name: "Offensive", value: categoryCounts.offensive },
+        { name: "Inappropriate", value: categoryCounts.Inappropriate },
+        { name: "Abusive", value: categoryCounts.Abusive },
+        { name: "Bullying", value: categoryCounts.Bullying },
+        { name: "Irrelevant", value: categoryCounts.Irrelevant },
+        { name: "Other", value: categoryCounts.O },
       ];
 
       setpieReportdata(array3);
@@ -179,79 +186,96 @@ const AdminDashboard = () => {
       const monthYearArray = data.map((dateObject) => {
         const date = new Date(dateObject.Date);
         const month = date.toLocaleString("default", { month: "long" });
-        // const year = date.getFullYear();
         return `${month} `;
       });
 
-      
-      // console.log("cat", monthYearArray);
-      
       const formattedData = monthYearArray.map((month, index) => {
         return { index, month };
       });
-      // console.log("zzzzz", formattedData)
-      
 
-      // console.log(".....", formattedData)
-        //   const filteredData = data.filter((cat) => cat.Month === month);
-      // const categories = data.map((doc) => {
-      //   return doc.Category;
-      // });
-      
-      // Now the 'categories' array contains the 'Category' values from the 'data' array
-      // console.log("data", formattedData);
-      // console.log("cat", categories);
+      const getCategory = data.map((doc) => {
+        return doc.Category;
+      });
 
-      
-      // console.log("fitler" , cat);
+      const mergedData = formattedData.map((obj, index) => {
+        return {
+          index: obj.index,
+          month: obj.month,
+          category: getCategory[index],
+        };
+      });
 
-    const getCategory = data.map((doc)=>{
-       return doc.Category;
-    })
-      
-    
-    // const concatArray = formattedData.concat(getCategory)
-    
-    const mergedData = formattedData.map((obj, index) => {
-      return {
-        index: obj.index,
-        month: obj.month,
-        category: getCategory[index]
-      };
-    });
-
-    
-    setmonthYearArray(mergedData);
-      
-      // console.log(formattedData);
-      
-      
-      
-      
-      // console.log("filteredData", formattedData);
-      
-     
-      // setnewStatecategory(categories);
-      
-
-
+      setmonthYearArray(mergedData);
     } catch (error) {
-
       console.error("Error fetching query count:", error);
     }
   };
- 
-  // const mergedArray = monthYearArray.concat(newStatecategory);
 
-  // console.log("monthYearArray", monthYearArray)
-  // console.log("newStatecategory", newStatecategory)
+  const displayFeedback = async () => {
+    try {
+      const res = await fetch("/findfeedback", {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
 
-// console.log("newarray-----", mergedArray)
+      const data = await res.json();
 
+      setuserFeedback(data.data);
+
+      let good = 0;
+      let bad = 0;
+
+      // userFeedback.forEach((user)=> user.Review ==='Good'? good++ : bad++ )
+
+      const feedCategory = {
+        app: 0,
+        course: 0,
+        faculty: 0,
+        suggestion: 0,
+      };
+
+      userFeedback.forEach((feedback) => {
+        if (feedback.Category in feedCategory) {
+          feedCategory[feedback.Category] += 1;
+        }
+      });
+
+      let arrayFeedback = [
+        { name: "App", value: feedCategory.app },
+        { name: "Course", value: feedCategory.course },
+        { name: "Facullty", value: feedCategory.faculty },
+        { name: "Suggestion", value: feedCategory.suggestion },
+      ];
+      setpieFeedback(arrayFeedback);
+
+      userFeedback.forEach((user) => (user.Review === "Good" ? good++ : bad++));
+
+      const newArray = [
+        { name: "Good", value: good },
+        { name: "Bad", value: bad },
+      ];
+
+        setuserReview(newArray);
+
+        
+
+      if (!res.status === 200) {
+        const error = new Error(res.error);
+        throw error;
+      }
+    } catch (err) {
+      console.log(err);
+      // Navigate('/login');
+    }
+  };
 
   useEffect(() => {
     getUserswithdate();
-    
+    displayFeedback();
     getUserscount();
     getQuerycount();
     getQueryCategory();
@@ -261,13 +285,12 @@ const AdminDashboard = () => {
   return (
     <>
       <div className="admin-container">
-        
         <AdminSidebar />
 
         {/**************************************** Dashboard  */}
 
         <div className="dashbooard-container">
-        {/* <NavBar/> */}
+          {/* <NavBar/> */}
           <div className="upfirst">
             <h2 id="statss">Statistics</h2>
             <div className="upper-portion">
@@ -278,18 +301,18 @@ const AdminDashboard = () => {
                   <div className="card-inside-content">{userCount}</div>
                   <div className="card-inside-head">Total Users</div>
                 </div>
-                
+
                 <div className="admin-upper-card">
                   <FontAwesomeIcon className="icon" icon={faUser} />
 
-                  <div className="card-inside-content">{userCount}</div>
+                  <div className="card-inside-content">{countStudents}</div>
                   <div className="card-inside-head">Total Students</div>
                 </div>
 
                 <div className="admin-upper-card">
                   <FontAwesomeIcon className="icon" icon={faUser} />
 
-                  <div className="card-inside-content">{userCount}</div>
+                  <div className="card-inside-content">{countTeachers}</div>
                   <div className="card-inside-head">Total Teachers</div>
                 </div>
                 <div className="admin-upper-card">
@@ -305,19 +328,37 @@ const AdminDashboard = () => {
           <div className="lower1">
             <h3 className="graph-head"> Users Graph</h3>
 
-
             <UsersChart data={monthYearArray} />
-
 
             <div className="piecharts">
               <div className="graph1">
-                <h3 className="graph-head">Category wise Queries</h3>
+                <h3 className="graph-head">All Queries</h3>
+                {/* <div className="review">Review</div> */}
+
                 <Chart data={pieDataCategory} />
               </div>
               <div className="graph1">
-                <h3 className="graph-head"> Category wise Reports</h3>
+                <h3 className="graph-head"> All Reports</h3>
+                {/* <div className="review">Review</div> */}
+
                 <Chart data={pieReportdata} />
               </div>
+              <div className="graph1" id="feedback-graph">
+                <div className="div1">
+
+                <h3 className="graph-head"> All Feedback</h3>
+              
+
+
+                <Chart data={pieFeedback} />
+                </div>
+                <div className="review-div">
+                <div className="review">Positive: {userReview[0].value}</div>
+                <div className="review">Negetive: {userReview[1].value}</div>
+                </div>
+              </div>
+
+              
             </div>
           </div>
         </div>

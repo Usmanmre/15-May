@@ -50,7 +50,8 @@
 
 #feedback-stats-head{
     
-        background-color: #8884d8;
+        background-color: #577590;
+        color: white;
         width: fit-content;
         height: fit-content;
         font-weight: 500;
@@ -94,10 +95,10 @@
 }
 .feedback-header{
     border-radius: 4px;
-    background-color: #fafafa;
+   color: white;
     height: max-content;
     box-shadow: 1px 1px 3px #878787; 
-    background-color: #8884d8;
+    background-color: #577590;
     width: 100%;
     display: grid;
     grid-template-columns: .3fr 1fr .4fr;
@@ -116,10 +117,13 @@
 
 #feedback-category{
     /* background-color: #ffcc00; */
+    color: white;
     width: 100%;
 }
 #desciption-category{
     /* background-color: blue; */
+    color: white;
+
     width: 130%;
 }
 #category{

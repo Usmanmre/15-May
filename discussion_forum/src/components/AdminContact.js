@@ -34,7 +34,7 @@ const AdminContact = () => {
 
   return (
     <div>
-      <div className="admin-container">
+      <div className="admin-container-contact">
         <div className="side-bar-div">
           <AdminSidebar />
         </div>

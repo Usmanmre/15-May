@@ -53,7 +53,7 @@ const AdminReport = () => {
         <div className="report-container">
           
           <div className="all-reports">
-            <h5 id="report-stats-heading">Reports</h5>
+            <h5 id="report-stats">Reports</h5>
      
 
 

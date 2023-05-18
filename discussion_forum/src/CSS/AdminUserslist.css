@@ -13,6 +13,17 @@ flex-direction: column;
   flex-direction: row; 
  
 }
+
+.active {
+  background-color: green;
+  /* Add other styles as needed */
+}
+
+.suspended {
+  background-color: red;
+  /* Add other styles as needed */
+}
+
 .userslist-container {
   background-color: #fafafa;
   /* flex: .80; */
@@ -78,7 +89,8 @@ flex-direction: column;
   margin-left: -3em;
 }
 #stats {
-  background-color: #8884d8;
+  background-color: #577590;
+  color: white;
   width: fit-content;
   height: fit-content;
   font-weight: 500;
@@ -93,15 +105,17 @@ flex-direction: column;
 
 .admin-panel-users-list-header {
   display: grid;
-  grid-template-columns: .5fr .5fr 0.5fr 0.3fr; 
+  grid-template-columns: .4fr .4fr .3fr .3fr ; 
+
   padding-right: 2em;
-  padding-left: 1em;
+  padding-left: 9em;
   /* background-color: brown; */
   
 }
 .admin-panel-users-list-header-options {
-  background-color: #8884d8; 
+  background-color: #577590; 
    font-size: 1.2rem;
+   color: white;
   font-weight: bold;
   margin-left: 1em;
  font-size: .9rem;
@@ -119,17 +133,51 @@ flex-direction: column;
   /* padding-left: 1em; */
   /* background-color: #ffcc00; */
 }
+
+#avatar{
+  /* background-color:#1207e1 ; */
+  cursor: pointer;
+  height: 4em;
+  margin-left: 1.3em;
+  margin-top: .5em;
+}
 .grid-item{
   /* background-color: aqua; */
   display: grid;
-  grid-template-columns: .5fr .5fr 0.5fr .3fr; 
-
-  margin-left: 1em;
+  grid-template-columns: .15fr .4fr .4fr .3fr .3fr; 
+ /* padding-right: 1em; */
+  margin-left: 1em;   
   /* width: 50em; */
 }
+
+#name-cat{
+  font-size: 1rem;
+  background-color: rgb(225, 225, 225);
+  margin-left: 1.2rem;
+  padding: 0.7rem;
+  border: 1px solid #dedede;
+  margin-top: 1em;
+  /* background-color: bisque; */
+  color: black;
+  border-radius: 5px;
+}
+
+#name-cat:hover{
+  font-size: 1rem;
+  background-color: rgb(223, 0, 0);
+  margin-left: 1.2rem;
+  padding: 0.7rem;
+  border: 1px solid #dedede;
+  margin-top: 1em;
+  /* background-color: bisque; */
+  color: rgb(255, 255, 255);
+  border-radius: 5px;
+}
+
+
 .display-userlist-option {
   font-size: 1rem;
-  background-color: rgb(227, 227, 227);
+  background-color: rgb(225, 225, 225);
   margin-left: 1.2rem;
   padding: 0.7rem;
   border: 1px solid #dedede;

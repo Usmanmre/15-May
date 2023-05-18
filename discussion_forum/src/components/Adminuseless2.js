@@ -10,7 +10,7 @@ const Adminuseless2 = ({FeedbackData}) => {
   return (
     <div className="feedback1">
       <div className="info">
-        <img className="avatar" src={avatar} alt="" />
+        {/* <img className="avatar" src={avatar} alt="" /> */}
         <div className="name">{FeedbackData?.ID}</div>
       </div>
       <div className="main-div">

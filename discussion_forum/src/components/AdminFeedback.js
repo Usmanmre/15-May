@@ -26,6 +26,7 @@ const AdminFeedback = () => {
 
       setuserFeedback(data.data);
 
+
       if (!res.status === 200) {
         const error = new Error(res.error);
         throw error;
@@ -34,7 +35,8 @@ const AdminFeedback = () => {
       console.log(err);
       // Navigate('/login');
     }
-  };
+  }; 
+ 
 
   useEffect(() => {
     displayFeedback();

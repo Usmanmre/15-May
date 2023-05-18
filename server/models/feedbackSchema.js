@@ -9,6 +9,9 @@ const feedbackSchema = new mongoose.Schema ( {
     },
     Feedback: {
         type:String
+    },
+    Review:{
+        type:String
     }
 });
 
